@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+.navbar{
+    background-color: #EAF4F4 !important;
+}
+body{
+    background-color: #F6FFF8;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.navbar-brand{
+    color: #fe424d !important;
+}
+
+.nav-link{
+    color: #222222 !important;
+
+}
+
+.container-fluid{
+    display: block;
+}
+
+footer{
+    height: 6rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background-color: #EAF4F4 !important;
+}
+.sm-icons {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.sm-icons i{
+    font-size: 24px;
+}
+.other-links{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+.other-links a {
+    text-decoration: none;
+    color: #222222;
+}
+
+.other-links a:hover{
+    text-decoration: underline;
+}
+
+.brand-logo *{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card{
+    border: none !important;
+    margin-bottom: 2rem;
+}
+
+.card-img-top{
+    width: 100% !important;
+    border-radius: 1.1rem !important;
+    object-fit: cover;
+}
+
+.card-text, .card-body{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.container{
+    margin-top: 18px;
+    margin-bottom: 10px;
+    flex: 1;
+}
+
+.anchor {
+    text-decoration: none;
+}
+
+/* overlay effect */
+.card-img-overlay{
+    opacity: 0;
+}
+
+.card-img-overlay:hover{
+    background-color: white;
+    opacity: 0.1;
+}
+
+.show-img{
+    height: 40vh;
+}
+
+.controls{
+    display: flex;
+    gap: 15px;
+
+}
