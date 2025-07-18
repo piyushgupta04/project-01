@@ -114,3 +114,13 @@ app.get('/', (req, res) =>{
     res.sendStatus(200);
 })
 
+
+//Default error handler
+app.use((err, req, res, next)=>{
+  let {message, name, kind, reason } = err
+  let obj = {message, name, kind}
+  // if(name === "CastError"){
+  //   console.log("Pleae fix the value of")
+  // }
+})
+
