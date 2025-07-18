@@ -14,6 +14,7 @@ body{
 
 .navbar-brand{
     color: #fe424d !important;
+    font-size: 28px !important;
 }
 
 .nav-link{
@@ -115,4 +116,9 @@ footer{
     display: flex;
     gap: 15px;
 
+}
+
+.form-control:focus{
+    border-color: #c0eac9 !important;
+    box-shadow: 0 0 0 4px #cadcce !important;
 }

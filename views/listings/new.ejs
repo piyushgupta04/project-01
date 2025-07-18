@@ -3,32 +3,42 @@
     <div class="row">
         <div class="col col-lg-7">
             <h1>Create a listing!</h1>
-            <form method="post" action="/listings?_method=POST">
+            <form method="post" novalidate class="needs-validation" action="/listings?_method=POST">
                 <div class="mb-2">
                     <label for="title">Title</label>
-                    <input type="text" name="obj[title]" id="" class="form-control">
+                    <input required type="text" name="obj[title]" id="" class="form-control">
+                    <div class="invalid-feedback">Title is required</div>
+                    <div class="valid-feedback">Looks Great!</div>
                 </div>
                 <div class="mb-2">
                     <label for="desc">Description</label>
-                    <textarea name="obj[desc]" class="form-control"></textarea>
+                    <textarea required name="obj[desc]" class="form-control"></textarea>
+                    <div class="invalid-feedback">Description is required</div>
+                    <div class="valid-feedback">Cool!</div>
                 </div>
                 <div class="mb-2">
                     <label for="price">Price</label>
-                    <input type="text" name="obj[price]" id="" class="form-control">
+                    <input required type="text" name="obj[price]" id="" class="form-control">
+                    <div class="invalid-feedback">Enter a valid price</div>
                 </div>
                 <div class="row">
                     <div class="mb-2 col-md-8">
                         <label for="location">Location</label>
-                        <input type="text" name="obj[location]" id="" class="form-control">
+                        <input required type="text" name="obj[location]" id="" class="form-control">
+                        <div class="invalid-feedback">Location is required</div>
+                        <div class="valid-feedback">All Set!</div>
                     </div>
                     <div class="mb-2 col-md-4">
                         <label for="country">Country</label>
-                        <input type="text" name="obj[country]" id="" class="form-control">
+                        <input required type="text" name="obj[country]" id="" class="form-control">
+                        <div class="invalid-feedback">Country is required</div>
+                        <div class="valid-feedback">Nice!</div>
                     </div>
                 </div>
-                    <div class="mb-3">
+                <div class="mb-3">
                     <label for="img">Upload your image URL</label>
-                    <input type="text" name="obj[image]" id=""  class="form-control">
+                    <input type="text" placeholder="Link/ URL" name="obj[image]" class="form-control">
+                    <div class="valid-feedback">We'll add a default image for you,</div>
                 </div>
                 <button class="btn btn-dark">Save</button>
                 <br><br>
