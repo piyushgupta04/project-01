@@ -27,12 +27,8 @@ body{
 }
 
 footer{
-    height: 6rem;
+    height: 7rem;
     width: 100%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
     gap: 5px;
     background-color: #EAF4F4 !important;
 }
@@ -122,3 +118,4 @@ footer{
     border-color: #c0eac9 !important;
     box-shadow: 0 0 0 4px #cadcce !important;
 }
+
