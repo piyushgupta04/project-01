@@ -5,7 +5,6 @@ const app = express();
 const path = require('path')
 const mongoose = require('mongoose');
 require('dotenv').config()
-const morgan = require('morgan')
  
 
 const DB_URL = process.env.DB_URL;
@@ -15,7 +14,6 @@ const PORT = process.env.PORT;
 
 const Listing = require('./models/listing')
 const methodOverride = require('method-override');
-const { log } = require('console');
 const ejsMate = require('ejs-mate');
 
 app.engine('ejs', ejsMate)
@@ -30,15 +28,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended: true}))
 
 
-main().then((r)=>{ console.log(`App connected with database!`)})
+main().then((r)=>{ 
+  console.log(`App connected with database!`)
+})
 .catch(err => console.log(err));
+
 async function main() {
-  await mongoose.connect(DB_URL+DB_NAME);
+  await mongoose.connect(DB_URL + DB_NAME);
 }
 
 
-app.listen(PORT, '0.0.0.0', ()=>{
-    console.log(`Server is up at port ${port}`);
+app.listen(PORT, ()=>{
+    console.log("Server is up");
 })
 
 app.get('/listings', async (req, res)=>{

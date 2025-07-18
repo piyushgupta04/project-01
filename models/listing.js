@@ -1,7 +1,6 @@
-const { default: mongoose } = require('mongoose');
-const mogoose = require('mongoose');
+const mongoose = require('mongoose');
 
-const Schema = mogoose.Schema;
+const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
     title : {
