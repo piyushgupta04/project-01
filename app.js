@@ -13,6 +13,11 @@ const PORT = process.env.PORT;
 
 
 const Listing = require('./models/listing')
+const Log = require('./models/log.js')
+const wrapAsync = require('./utils/wrapAsync.js')
+
+const ExpressError = require('./utils/ExpressError.js')
+
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 
@@ -42,85 +47,98 @@ app.listen(PORT, ()=>{
     console.log("Server is up");
 })
 
-app.get('/listings', async (req, res)=>{
-    try{
-      let allData = await Listing.find({})
-      console.log('Fetching completed ... ✅')
-      res.render('listings/index.ejs', {allData})
-    } catch (err) {
-      console.log(err);
-      res.send({
-        message: "Kal ana kal, aaj DB dead ho gaya ha!"
-      })
-    }
-})
+// Fetch all listings from DB
+app.get('/listings', wrapAsync( async (req, res)=>{
+  let allData = await Listing.find({})
+  console.log('Fetching completed ... ✅')
+  res.render('listings/index.ejs', {allData})
+}))
 
+
+// Fetch a specific listings from DB
 app.get('/listings/new', (req, res)=>{
   res.render('listings/new.ejs')
 })
 
-app.post('/listings', async (req, res)=>{
-  const r = new Listing(req.body.obj)
-  try{
-    await r.save();
-    console.log('Data saved successfuly!');
-    res.redirect('/listings');
-  }catch(err){
-    console.log(err)
+// Adds a new listings in the DB
+app.post('/listings',wrapAsync( async (req, res)=>{
+  if(!req.body.obj){
+    throw new ExpressError(400, "Invalid Post Request")
   }
-})
+  const r = new Listing(req.body.obj)
+  await r.save();
+  console.log('Data saved successfuly!');
+  res.redirect('/listings');
+}))
 
-app.get('/listings/:id/edit', async (req, res)=>{
-  const {id} = req.params
-  try{
+
+// Loads edit page for pre existing listings
+app.get('/listings/:id/edit', wrapAsync( async (req, res)=>{
+    const {id} = req.params
     const detail = await Listing.findById(id)
     if (!detail) {
       return res.send("Listing not found");
     }
     res.render('listings/edit.ejs', {detail})
-    console.log(detail);
-  }catch(err){
-    console.log(err);
-  }
-})
+    // console.log(detail);
+}))
 
-
-app.delete('/listings/:id', async (req, res)=>{
+// Finds a listing on the basis of _id and deletes it from the DB
+app.delete('/listings/:id',wrapAsync( async (req, res)=>{
   const {id} = req.params
   const r = await Listing.findByIdAndDelete(id)
   console.log(r)
   res.redirect('/listings')
-})
+}))
 
-app.put('/listings/:id', async (req, res)=>{
+// edits pre existing post
+app.put('/listings/:id', wrapAsync( async(req, res)=>{
   const {id} = req.params;
   const r = await Listing.findByIdAndUpdate(id, { ...req.body.obj}) 
   res.redirect(`/listings/${id}`)
+}))
+
+// open's up full detail page for the specific listings
+app.get('/listings/:id', wrapAsync( async (req, res)=>{
+   const { id } = req.params;
+   const detail = await Listing.findById(id)
+   console.log('Got it!, now sending ...')
+   res.render('listings/details.ejs', {detail})
+
+}))
+
+// root route!
+app.get('/', (req, res) =>{
+    res.redirect('/listings')
 })
 
-app.get('/listings/:id', async (req, res)=>{
-  const { id } = req.params;
+
+app.use(/.*/, (req, res, next) => {
+  next(new ExpressError(404, "Page not found!"))
+});
+
+
+// Default handler to get logs of the encountered err
+// Using try catch block for async errors!
+app.use( async (err, req, res, next)=>{
   try{
-     const detail = await Listing.findById(id)
-    console.log('Got it!, now sending ...')
-    res.render('listings/details.ejs', {detail})
-  }catch(err){
-    console.log(err)
+    let message = err.message
+    let log = await new Log({
+      name: message,
+    })
+    await log.save()
+    console.log("Log saved successfuly ✅")
+    next(err)
+  } catch(err){
+    console.log("Catch triggered!")
+    next(err)
   }
 })
 
 
-app.get('/', (req, res) =>{
-    res.sendStatus(200);
-})
-
-
-//Default error handler
-app.use((err, req, res, next)=>{
-  let {message, name, kind, reason } = err
-  let obj = {message, name, kind}
-  // if(name === "CastError"){
-  //   console.log("Pleae fix the value of")
-  // }
-})
+// Default error handler
+app.use((err, req, res, next) => {
+  let { statusCode=500, message="Something went wrong!"} = err;
+  res.status(statusCode).render('error.ejs', { err });
+});
 
