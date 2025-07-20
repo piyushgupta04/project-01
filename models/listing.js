@@ -12,9 +12,8 @@ const listingSchema = new Schema({
     },
     image: {
         type: String,
-        required: true,
-        default: "https://ik.imagekit.io/myImages/template_1080%20x%201080.mp4?updatedAt=1752295406700",
-        set: (v) => v === "" ? "https://ik.imagekit.io/myImages/template_1080%20x%201080.mp4?updatedAt=1752295406700" : v,
+        default: "https://images.unsplash.com/photo-1602343168117-bb8ffe3e2e9f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dmlsbGF8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60",
+        set: (v) => v === "" ? "https://images.unsplash.com/photo-1602343168117-bb8ffe3e2e9f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dmlsbGF8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60" : v,
     },
     price: {
         type: Number,

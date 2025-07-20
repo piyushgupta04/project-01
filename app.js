@@ -55,6 +55,14 @@ app.get('/listings', wrapAsync( async (req, res)=>{
   res.render('listings/index.ejs', {allData})
 }))
 
+// ! validator
+const validateData = (req, res, next) => {
+  let result = listingObj.validate(req.body)
+  console.log(result)
+  if(result.error){
+    throw new ExpressError(400, result.error)
+  }
+}
 
 // Fetch a specific listings from DB
 app.get('/listings/new', (req, res)=>{
@@ -62,16 +70,12 @@ app.get('/listings/new', (req, res)=>{
 })
 
 // Adds a new listings in the DB
-app.post('/listings',wrapAsync( async (req, res)=>{
-  let result = listingObj.validate(res.body)
-  console.log(result)
-  // console.log(req.body)
-  // console.log("after if",req.body)
-  // const r = new Listing(req.body.obj)
-  // console.log("is data saving ?")
-  // await r.save();
+app.post('/listings', validateData,wrapAsync( async (req, res)=>{
+  console.log(req.body)
+  const r = new Listing(req.body.obj)
+  await r.save();
   console.log('Data saved successfuly!');
-  res.redirect('/listings');
+  res.redirect("/listings");
 }))
 
 
@@ -95,7 +99,7 @@ app.delete('/listings/:id',wrapAsync( async (req, res)=>{
 }))
 
 // edits pre existing post
-app.put('/listings/:id', wrapAsync( async(req, res)=>{
+app.put('/listings/:id', validateData, wrapAsync( async(req, res)=>{
   const {id} = req.params;
   const r = await Listing.findByIdAndUpdate(id, { ...req.body.obj}) 
   res.redirect(`/listings/${id}`)
@@ -116,9 +120,9 @@ app.get('/', (req, res) =>{
 })
 
 
-app.use(/.*/, (req, res, next) => {
-  next(new ExpressError(404, "Page not found!"))
-});
+// app.use(/.*/, (req, res, next) => {
+//   next(new ExpressError(404, "Page not found!"))
+// });
 
 
 // Default handler to get logs of the encountered err
@@ -142,7 +146,7 @@ app.use( async (err, req, res, next)=>{
 // Default error handler
 app.use((err, req, res, next) => {
   let { statusCode=500, message="Something went wrong!"} = err;
-  console.log(err.stack)
+  // console.log(err.stack)
   res.status(statusCode).render('error.ejs', { err });
 });
 

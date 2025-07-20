@@ -1,14 +1,13 @@
-const joi = require('joi')
-const Listing = require('./models/listing')
+const Joi = require('joi')
 
-const listingObject = joi.object({
-     obj : joi.object({
-        title: joi.string().required(),
-        desc: joi.string().required(),
-        location: joi.string().required(),
-        country: joi.string().required(),
-        price: joi.number().required().min(0),
-        image: joi.string()
+const listingObject = Joi.object({
+     obj : Joi.object({
+        title: Joi.string().required(),
+        desc: Joi.string().required(),
+        location: Joi.string().required(),
+        country: Joi.string().required(),
+        price: Joi.number().required().min(0),
+        image: Joi.string()
      }).required()
 })
 

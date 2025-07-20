@@ -8,8 +8,6 @@ const DB_NAME = process.env.DB_NAME;
 
 const path = require('path')
 
-console.lob(DB_NAME)
-
 main().then((r)=>{
     console.log(`load.js connected successfuly with DB`)
 }).catch(err => console.log(err));
