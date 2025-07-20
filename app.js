@@ -15,6 +15,7 @@ const PORT = process.env.PORT;
 const Listing = require('./models/listing')
 const Log = require('./models/log.js')
 const wrapAsync = require('./utils/wrapAsync.js')
+const listingObj = require('./schema.js')
 
 const ExpressError = require('./utils/ExpressError.js')
 
@@ -62,11 +63,13 @@ app.get('/listings/new', (req, res)=>{
 
 // Adds a new listings in the DB
 app.post('/listings',wrapAsync( async (req, res)=>{
-  if(!req.body.obj){
-    throw new ExpressError(400, "Invalid Post Request")
-  }
-  const r = new Listing(req.body.obj)
-  await r.save();
+  let result = listingObj.validate(res.body)
+  console.log(result)
+  // console.log(req.body)
+  // console.log("after if",req.body)
+  // const r = new Listing(req.body.obj)
+  // console.log("is data saving ?")
+  // await r.save();
   console.log('Data saved successfuly!');
   res.redirect('/listings');
 }))
@@ -139,6 +142,7 @@ app.use( async (err, req, res, next)=>{
 // Default error handler
 app.use((err, req, res, next) => {
   let { statusCode=500, message="Something went wrong!"} = err;
+  console.log(err.stack)
   res.status(statusCode).render('error.ejs', { err });
 });
 

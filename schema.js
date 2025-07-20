@@ -1,0 +1,15 @@
+const joi = require('joi')
+const Listing = require('./models/listing')
+
+const listingObject = joi.object({
+     obj : joi.object({
+        title: joi.string().required(),
+        desc: joi.string().required(),
+        location: joi.string().required(),
+        country: joi.string().required(),
+        price: joi.number().required().min(0),
+        image: joi.string()
+     }).required()
+})
+
+module.exports = listingObject;
