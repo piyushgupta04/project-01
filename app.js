@@ -102,7 +102,7 @@ app.delete('/listings/:id',wrapAsync( async (req, res)=>{
 app.put('/listings/:id', validateData, wrapAsync( async(req, res)=>{
   const {id} = req.params;
   const r = await Listing.findByIdAndUpdate(id, { ...req.body.obj}) 
-  res.redirect(`/listings/${id}`)
+  res.redirect('/listings/${id}')
 }))
 
 // open's up full detail page for the specific listings
