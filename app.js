@@ -16,6 +16,7 @@ const Listing = require('./models/listing')
 const Log = require('./models/log.js')
 const wrapAsync = require('./utils/wrapAsync.js')
 const listingObj = require('./schema.js')
+const Review = require('./models/review.js')
 
 const ExpressError = require('./utils/ExpressError.js')
 
