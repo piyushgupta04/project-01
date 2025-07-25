@@ -1,13 +1,10 @@
 <% layout("./layouts/default.ejs") %>
-    <div class="row">
-        <div class="col">
-            <div class="row ">
-                <div class="card col col-md-9 col-lg-9 mx-auto">
+            <div class="row">
+                <div class="card col col-sm-12 col-md-9 col-lg-6 cpl-xl-6 mx-auto">
+                    <h3 class="mb-3"><b><%= detail.title %></b><br></h3>
                     <img src="<%= detail.image %>" class="card-img-top show-img" alt="...">
                     <div class="card-body">
                         <p class="card-text">
-                            <br>
-                            <b><%= detail.title %></b><br>
                             <%= detail.desc %><br>
                             &#8377;<%= detail.price.toLocaleString("en-IN") %><br>
                             <%= detail.location %><br>
@@ -22,6 +19,19 @@
                     </div>
                 </div> 
             </div>
-            
-        </div>
-    </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col col-sm-12 col-md-9 col-lg-6 cpl-xl-6 mx-auto">
+                        <h4>Add a review! </h4>
+                        <form action="">
+                            <label for="rating" class="form-label">Slide the slider to rate!</label>
+                            <input type="range" min="1" max="5" class="form-range" name="review[rating]" id="rating"><br>
+                            <label for="comment" class="form-label">Write a comment about this place</label>
+                            <textarea name="review[comment]" class="form-control" rows="6" id="comment"></textarea>
+                            <button class="btn btn-outline-dark mt-3">Done</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+

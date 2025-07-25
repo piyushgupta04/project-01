@@ -52,7 +52,7 @@ app.listen(PORT, ()=>{
 // Fetch all listings from DB
 app.get('/listings', wrapAsync( async (req, res)=>{
   let allData = await Listing.find({})
-  console.log('Fetching completed ... ✅')
+  // console.log('Fetching completed ... ✅')
   res.render('listings/index.ejs', {allData})
 }))
 
@@ -75,7 +75,7 @@ app.post('/listings', validateData,wrapAsync( async (req, res)=>{
   console.log(req.body)
   const r = new Listing(req.body.obj)
   await r.save();
-  console.log('Data saved successfuly!');
+  // console.log('Data saved successfuly!');
   res.redirect("/listings");
 }))
 
@@ -95,7 +95,7 @@ app.get('/listings/:id/edit', wrapAsync( async (req, res)=>{
 app.delete('/listings/:id',wrapAsync( async (req, res)=>{
   const {id} = req.params
   const r = await Listing.findByIdAndDelete(id)
-  console.log(r)
+  // console.log(r)
   res.redirect('/listings')
 }))
 
@@ -110,7 +110,7 @@ app.put('/listings/:id', validateData, wrapAsync( async(req, res)=>{
 app.get('/listings/:id', wrapAsync( async (req, res)=>{
    const { id } = req.params;
    const detail = await Listing.findById(id)
-   console.log('Got it!, now sending ...')
+  //  console.log('Got it!, now sending ...')
    res.render('listings/details.ejs', {detail})
 
 }))

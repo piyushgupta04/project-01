@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
 .navbar{
-    background-color: #EAF4F4 !important;
+    background-color: #E4F9E9 !important;
 }
 body{
     background-color: #F6FFF8;
@@ -30,7 +30,7 @@ footer{
     height: 7rem;
     width: 100%;
     gap: 5px;
-    background-color: #EAF4F4 !important;
+    background-color: #E4F9E9 !important;
 }
 .sm-icons {
     display: flex;
@@ -71,6 +71,7 @@ footer{
 .card{
     border: none !important;
     margin-bottom: 2rem;
+    background-color: #F6FFF8;
 }
 
 .card-img-top{
