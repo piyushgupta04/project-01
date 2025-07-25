@@ -15,7 +15,7 @@ const PORT = process.env.PORT;
 const Listing = require('./models/listing')
 const Log = require('./models/log.js')
 const wrapAsync = require('./utils/wrapAsync.js')
-const listingObj = require('./schema.js')
+const {joi_listingSchema, joi_reviewSchema} = require('./schema.js')
 const Review = require('./models/review.js')
 
 const ExpressError = require('./utils/ExpressError.js')
@@ -57,12 +57,21 @@ app.get('/listings', wrapAsync( async (req, res)=>{
 }))
 
 // ! validator
-const validateData = (req, res, next) => {
-  let result = listingObj.validate(req.body)
-  console.log(result)
-  if(result.error){
-    throw new ExpressError(400, result.error)
+const validateListing = (req, res, next) => {
+  console.log(req.body)  
+  let {error} = joi_listingSchema.validate(req.body)
+  if(error){
+    throw new ExpressError(400, error)
   }
+  next()
+}
+
+const validateReview = (req, res, next) => {
+  let {error} = joi_reviewSchema.validate(req.body)
+  if(error){
+    throw new ExpressError(400, error)
+  }
+  next()
 }
 
 // Fetch a specific listings from DB
@@ -71,7 +80,7 @@ app.get('/listings/new', (req, res)=>{
 })
 
 // Adds a new listings in the DB
-app.post('/listings', validateData,wrapAsync( async (req, res)=>{
+app.post('/listings', validateListing ,wrapAsync( async (req, res)=>{
   console.log(req.body)
   const r = new Listing(req.body.obj)
   await r.save();
@@ -100,10 +109,9 @@ app.delete('/listings/:id',wrapAsync( async (req, res)=>{
 }))
 
 // edits pre existing post
-app.put('/listings/:id', validateData, wrapAsync( async(req, res)=>{
+app.put('/listings/:id', validateListing, wrapAsync( async(req, res)=>{
   const {id} = req.params;
-  const r = await Listing.findByIdAndUpdate(id, { ...req.body.obj}) 
-  // ! also
+  const r = await Listing.findByIdAndUpdate(id, { ...req.body.obj})
   res.redirect(`/listings/${id}`)
 }))
 
@@ -117,7 +125,7 @@ app.get('/listings/:id', wrapAsync( async (req, res)=>{
 }))
 
 //review route
-app.post('/listings/:id/reviews', wrapAsync( async (req, res)=>{
+app.post('/listings/:id/reviews', validateReview, wrapAsync( async (req, res)=>{
   console.log("review route working!")
   let {id} = req.params
   let get_listing = await Listing.findById(req.params.id)
@@ -125,6 +133,7 @@ app.post('/listings/:id/reviews', wrapAsync( async (req, res)=>{
   await new_review.save()
   get_listing.reviews.push(new_review);
   await get_listing.save()
+  console.log("working")
   // res.send("review saved, check your DB")
   res.redirect(`/listings/${id}`)
 }))
@@ -139,26 +148,27 @@ app.get('/', (req, res) =>{
 
 // Default handler to get logs of the encountered err
 // Using try catch block for async errors!
-app.use( async (err, req, res, next)=>{
-  try{
-    let message = err.message
-    let log = await new Log({
-      name: message,
-    })
-    await log.save()
-    console.log("Log saved successfuly ✅")
-    next(err)
-  } catch(err){
-    console.log("Catch triggered!")
-    next(err)
-  }
-})
+// app.use( async (err, req, res, next)=>{
+//   try{
+//     let message = err.message
+//     let log = await new Log({
+//       name: message,
+//     })
+//     await log.save()
+//     console.log("Log saved successfuly ✅")
+//     next(err)
+//   } catch(err){
+//     console.log("Catch triggered!")
+//     next(err)
+//   }
+// })
 
 
 // Default error handler
 app.use((err, req, res, next) => {
   let { statusCode=500, message="Something went wrong!"} = err;
-  // console.log(err.stack)
+  console.log(statusCode, message)
   res.status(statusCode).render('error.ejs', { err });
 });
 
+ 

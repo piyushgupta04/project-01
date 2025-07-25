@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { type } = require('../schema');
 const Schema = mongoose.Schema;
 
-let ReviewSchema = Schema({
+let reviewSchema = Schema({
     comment: String,
     rating: {
         type: Number,
@@ -16,6 +16,6 @@ let ReviewSchema = Schema({
     }
 })
 
-const Review = mongoose.model('Review', ReviewSchema)
+const Review = mongoose.model('Review', reviewSchema)
 
 module.exports = Review;
