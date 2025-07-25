@@ -44,11 +44,14 @@
                                 <% for( let single of detail.reviews ) { %>
                                     <div class="col review-card mx-auto mb-3">
                                         <div class="card p-2">
-                                            <div class="card-body">
+                                            <div class="card-body ">
                                                 <h5 class="card-title">Username</h5>
                                                 <p class="card-text"><%= single.comment %></p>
-                                                <p class="card-text"><%= single.rating %> Star</p>
+                                                <p class="card-text "><%= single.rating %> Star</p>
                                             </div>
+                                            <form method="post" action="/listings/<%= detail._id %>/reviews/<%= single._id %>?_method=DELETE" class="mt-2">
+                                                <button class="btn btn-sm btn-dark">Delete</button>
+                                            </form>
                                         </div>
                                     </div>
                                 <% } %>

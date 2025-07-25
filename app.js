@@ -140,6 +140,14 @@ app.post('/listings/:id/reviews', validateReview, wrapAsync( async (req, res)=>{
   res.redirect(`/listings/${id}`)
 }))
 
+app.delete('/listings/:id/reviews/:reviewID', wrapAsync ( async (req, res)=>{
+  const {id, reviewID} = req.params;
+  const r = await Listing.findByIdAndUpdate(id, {$pull: { reviews: reviewID}})
+  await Review.findByIdAndDelete(reviewID)
+  console.log(r)
+  res.redirect(`/listings/${id}`)
+}))
+
 // root route!
 app.get('/', (req, res) =>{
     res.redirect('/listings')
