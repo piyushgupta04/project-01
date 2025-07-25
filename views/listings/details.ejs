@@ -23,7 +23,7 @@
                 <div class="row">
                     <div class="col col-sm-12 col-md-9 col-lg-6 cpl-xl-6 mx-auto">
                         <h4>Add a review! </h4>
-                        <form action="">
+                        <form method="post" action="/listings/<%= detail._id %>/reviews?_method=POST">
                             <label for="rating" class="form-label">Slide the slider to rate!</label>
                             <input type="range" min="1" max="5" class="form-range" name="review[rating]" id="rating"><br>
                             <label for="comment" class="form-label">Write a comment about this place</label>

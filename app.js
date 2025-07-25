@@ -103,7 +103,8 @@ app.delete('/listings/:id',wrapAsync( async (req, res)=>{
 app.put('/listings/:id', validateData, wrapAsync( async(req, res)=>{
   const {id} = req.params;
   const r = await Listing.findByIdAndUpdate(id, { ...req.body.obj}) 
-  res.redirect('/listings/${id}')
+  // ! also
+  res.redirect(`/listings/${id}`)
 }))
 
 // open's up full detail page for the specific listings
@@ -115,15 +116,25 @@ app.get('/listings/:id', wrapAsync( async (req, res)=>{
 
 }))
 
+//review route
+app.post('/listings/:id/reviews', wrapAsync( async (req, res)=>{
+  console.log("review route working!")
+  let {id} = req.params
+  let get_listing = await Listing.findById(req.params.id)
+  let new_review = new Review(req.body.review)
+  await new_review.save()
+  get_listing.reviews.push(new_review);
+  await get_listing.save()
+  // res.send("review saved, check your DB")
+  res.redirect(`/listings/${id}`)
+}))
+
 // root route!
 app.get('/', (req, res) =>{
     res.redirect('/listings')
 })
 
 
-// app.use(/.*/, (req, res, next) => {
-//   next(new ExpressError(404, "Page not found!"))
-// });
 
 
 // Default handler to get logs of the encountered err
