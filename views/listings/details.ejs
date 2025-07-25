@@ -1,6 +1,6 @@
 <% layout("./layouts/default.ejs") %>
             <div class="row">
-                <div class="card col col-sm-12 col-md-9 col-lg-6 cpl-xl-6 mx-auto">
+                <div class="card listing-card  col-sm-12 col-md-10 col-lg-7 cpl-xl-6 mx-auto">
                     <h3 class="mb-3"><b><%= detail.title %></b><br></h3>
                     <img src="<%= detail.image %>" class="card-img-top show-img" alt="...">
                     <div class="card-body">
@@ -21,7 +21,7 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col col-sm-12 col-md-9 col-lg-6 cpl-xl-6 mx-auto">
+                    <div class="col col-sm-12 col-md-10 col-lg-7 cpl-xl-6 mx-auto">
                         <h4>Add a review! </h4>
                         <form method="post" action="/listings/<%= detail._id %>/reviews?_method=POST" novalidate class="needs-validation">
                             <label for="rating" class="form-label">Slide the slider to rate!</label>
@@ -31,6 +31,29 @@
                             <div class="invalid-feedback">Please write something ...</div>
                             <button class="btn btn-outline-dark mt-3">Done</button>
                         </form>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col col-sm-12 col-md-10 col-lg-7 cpl-xl-6 mx-auto">
+                        <h4>Reviews-</h4>
+                        <div class="container">
+                            <div class="row row-cols-2">
+                                <% for( let single of detail.reviews ) { %>
+                                    <div class="col review-card mx-auto mb-3">
+                                        <div class="card p-2">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Username</h5>
+                                                <p class="card-text"><%= single.comment %></p>
+                                                <p class="card-text"><%= single.rating %> Star</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

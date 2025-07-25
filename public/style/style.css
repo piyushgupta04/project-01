@@ -68,7 +68,7 @@ footer{
     align-items: center;
 }
 
-.card{
+.listing-card {
     border: none !important;
     margin-bottom: 2rem;
     background-color: #F6FFF8;

@@ -60,8 +60,9 @@ app.get('/listings', wrapAsync( async (req, res)=>{
 const validateListing = (req, res, next) => {
   console.log(req.body)  
   let {error} = joi_listingSchema.validate(req.body)
+  const msg = error.details.map(el => el.message).join(',');
   if(error){
-    throw new ExpressError(400, error)
+    throw new ExpressError(400, msg)
   }
   next()
 }
@@ -69,7 +70,8 @@ const validateListing = (req, res, next) => {
 const validateReview = (req, res, next) => {
   let {error} = joi_reviewSchema.validate(req.body)
   if(error){
-    throw new ExpressError(400, error)
+    const msg = error.details.map(el => el.message).join(',');
+    throw new ExpressError(400, msg)
   }
   next()
 }
@@ -118,7 +120,7 @@ app.put('/listings/:id', validateListing, wrapAsync( async(req, res)=>{
 // open's up full detail page for the specific listings
 app.get('/listings/:id', wrapAsync( async (req, res)=>{
    const { id } = req.params;
-   const detail = await Listing.findById(id)
+   const detail = await Listing.findById(id).populate("reviews")
   //  console.log('Got it!, now sending ...')
    res.render('listings/details.ejs', {detail})
 
