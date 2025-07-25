@@ -1,9 +1,10 @@
-# Wanderlust - Travel & Stay Listings
+
+# Roamify - Travel & Stay Listings
 
 ![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)
 ![Version: 1.0.0](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)
 
-Wanderlust is a full-featured web application that allows users to discover, share, and book unique accommodations around the world. It provides a platform for users to list their own properties and for travelers to find their perfect stay.
+Roamify is a full-featured web application that allows users to discover, share, and book unique accommodations around the world. It provides a platform for users to list their own properties and for travelers to find their perfect stay.
 
 ## ✨ Features
 
@@ -12,6 +13,13 @@ Wanderlust is a full-featured web application that allows users to discover, sha
 *   **Detailed Views:** Each listing has a dedicated page with in-depth details and high-quality images.
 *   **Server-Side Validation:** Robust data validation using Joi to ensure data integrity.
 *   **Responsive Design:** A clean and modern user interface built with EJS and Bootstrap, ensuring a seamless experience on all devices.
+
+## 📸 Screenshots
+
+*(Add screenshots of your application here to give users a visual overview.)*
+
+![Screenshot 1](placeholder.jpg)
+![Screenshot 2](placeholder.jpg)
 
 ## 🛠️ Technologies Used
 
@@ -51,7 +59,7 @@ Make sure you have the following installed on your system:
     Create a `.env` file in the root of the project and add the following configuration. Replace the placeholder values with your actual data.
     ```env
     DB_URL=mongodb://127.0.0.1:27017/
-    DB_NAME=wanderlust
+    DB_NAME=roamify
     PORT=8080
     ```
 
@@ -65,6 +73,10 @@ Make sure you have the following installed on your system:
 
 2.  **Access the application:**
     Open your web browser and navigate to `http://localhost:8080`. You will be redirected to the main listings page.
+
+## Deployment
+
+(Instructions on how to deploy the application will go here. You can add instructions for platforms like Heroku, Vercel, or AWS.)
 
 ## 📂 Project Structure
 
