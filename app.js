@@ -4,11 +4,25 @@ const path = require('path')
 const mongoose = require('mongoose');
 require('dotenv').config()
 const ejsMate = require('ejs-mate');
+const session = require('express-session')
 
 // enviroment variables!
 const DB_URL = process.env.DB_URL;
 const DB_NAME = process.env.DB_NAME;
 const PORT = process.env.PORT;
+
+// setting cookies (express-session cconfigs + middleware used!)
+const session_config = {
+    secret: "HiLrUJyQ5vQQelF3wi6ucgEwrB9AJM09x4D1HAbmWds=",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true
+  }
+}
+
+app.use(session(session_config))
 
 // * capturing routes-
 const listings = require('./routes/listings.js')
