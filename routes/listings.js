@@ -25,6 +25,20 @@ const validateListing = (req, res, next) => {
 }
 
 
+// ! Open's up full detail page for the specific listings
+router.get('/:id', wrapAsync( async (req, res)=>{
+  const { id } = req.params;
+  const detail = await Listing.findById(id).populate("reviews")
+  console.log(detail)
+  if(!detail){
+    req.flash('error_msg', 'The listing your are requested does not exists!')
+    return res.redirect('/listings')
+ }
+//  console.log('Got it!, now sending ...')
+ res.render('listings/details.ejs', {detail})
+}))
+
+
 // ! Fetch all listings from DB
 router.get('/', wrapAsync( async (req, res)=>{
   let allData = await Listing.find({})
@@ -43,6 +57,7 @@ router.post('/', validateListing ,wrapAsync( async (req, res)=>{
   console.log(req.body)
   const r = new Listing(req.body.obj)
   await r.save();
+  req.flash('success_msg', 'Listing added successfully!')
   res.redirect("/listings");
 }))
 
@@ -52,7 +67,8 @@ router.get('/:id/edit', wrapAsync( async (req, res)=>{
     const {id} = req.params
     const detail = await Listing.findById(id)
     if (!detail) {
-      return res.send("Listing not found");
+      req.flash('error_msg', 'The listing your are requested does not exists!')
+      return res.redirect('/listings')
     }
     res.render('listings/edit.ejs', {detail})
 }))
@@ -62,25 +78,20 @@ router.get('/:id/edit', wrapAsync( async (req, res)=>{
 router.delete('/:id',wrapAsync( async (req, res)=>{
   const {id} = req.params
   const r = await Listing.findByIdAndDelete(id)
-  res.redirect('/listings')
-}))
-
-
-// ! Edits pre existing post
-router.put('/:id', validateListing, wrapAsync( async(req, res)=>{
-  const {id} = req.params;
-  const r = await Listing.findByIdAndUpdate(id, { ...req.body.obj})
-  res.redirect(`/listings/${id}`)
-}))
-
-
-// ! Open's up full detail page for the specific listings
-router.get('/:id', wrapAsync( async (req, res)=>{
-   const { id } = req.params;
-   const detail = await Listing.findById(id).populate("reviews")
-  //  console.log('Got it!, now sending ...')
-   res.render('listings/details.ejs', {detail})
-}))
+    req.flash('success_msg', 'Listing deleted successfully!')
+    res.redirect('/listings')
+  }))
+  
+  
+  // ! Edits pre existing post
+  router.put('/:id', validateListing, wrapAsync( async(req, res)=>{
+    const {id} = req.params;
+    const r = await Listing.findByIdAndUpdate(id, { ...req.body.obj})
+    req.flash('success_msg', 'Listing updated successfully!')
+    res.redirect(`/listings/${id}`)
+  }))
+  
+  
 
 
 // * Simply exported this to require in app.js

@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 require('dotenv').config()
 const ejsMate = require('ejs-mate');
 const session = require('express-session')
+const flash = require('connect-flash');
 
 // enviroment variables!
 const DB_URL = process.env.DB_URL;
@@ -23,6 +24,13 @@ const session_config = {
 }
 
 app.use(session(session_config))
+app.use(flash())
+
+app.use((req, res, next) =>{
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.error_msg = req.flash('error_msg')
+  next()
+})
 
 // * capturing routes-
 const listings = require('./routes/listings.js')
