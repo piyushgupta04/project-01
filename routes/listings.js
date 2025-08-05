@@ -7,6 +7,10 @@ const Listing = require('../models/listing')
 // * wrapAsync fn()
 const wrapAsync = require('../utils/wrapAsync.js')
 
+// * isAuthenticated fn()
+// In listings.js
+const {isLoggedIn} = require('../isAuthenticated.js') 
+
 // * Joi's validation schema
 const {joi_listingSchema} = require('../schema.js')
 
@@ -24,6 +28,10 @@ const validateListing = (req, res, next) => {
   }
 }
 
+// ! Create listing page
+router.get('/new', isLoggedIn, (req, res)=>{
+  res.render('listings/new.ejs')
+})
 
 // ! Open's up full detail page for the specific listings
 router.get('/:id', wrapAsync( async (req, res)=>{
@@ -46,14 +54,10 @@ router.get('/', wrapAsync( async (req, res)=>{
 }))
 
 
-// ! Fetch a specific listings from DB
-router.get('/new', (req, res)=>{
-  res.render('listings/new.ejs')
-})
 
 
 // ! Adds a new listings in the DB
-router.post('/', validateListing ,wrapAsync( async (req, res)=>{
+router.post('/', isLoggedIn, validateListing ,wrapAsync( async (req, res)=>{
   console.log(req.body)
   const r = new Listing(req.body.obj)
   await r.save();
@@ -63,7 +67,7 @@ router.post('/', validateListing ,wrapAsync( async (req, res)=>{
 
 
 // ! Loads edit page for pre existing listings
-router.get('/:id/edit', wrapAsync( async (req, res)=>{
+router.get('/:id/edit', isLoggedIn, wrapAsync( async (req, res)=>{
     const {id} = req.params
     const detail = await Listing.findById(id)
     if (!detail) {
@@ -75,7 +79,7 @@ router.get('/:id/edit', wrapAsync( async (req, res)=>{
 
 
 // ! Finds a listing on the basis of _id and deletes it from the DB
-router.delete('/:id',wrapAsync( async (req, res)=>{
+router.delete('/:id', isLoggedIn, wrapAsync( async (req, res)=>{
   const {id} = req.params
   const r = await Listing.findByIdAndDelete(id)
     req.flash('success_msg', 'Listing deleted successfully!')
@@ -84,7 +88,7 @@ router.delete('/:id',wrapAsync( async (req, res)=>{
   
   
   // ! Edits pre existing post
-  router.put('/:id', validateListing, wrapAsync( async(req, res)=>{
+  router.put('/:id', isLoggedIn, validateListing, wrapAsync( async(req, res)=>{
     const {id} = req.params;
     const r = await Listing.findByIdAndUpdate(id, { ...req.body.obj})
     req.flash('success_msg', 'Listing updated successfully!')

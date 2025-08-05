@@ -1,0 +1,19 @@
+<%- layout('layouts/default.ejs') %>
+    <div class="row">
+        <div class="col col-lg-6">
+            <h1>Roamify</h1>
+            <h4>Please login to continue,</h4>
+            <form method="post" novalidate class="needs-validation" action="/login">
+                <div class="mb-2">
+                    <label for="title">Username</label>
+                    <input required type="text" name="username" id="username" class="form-control">
+                    <div class="invalid-feedback">Username is Required!</div>
+                </div>
+                <div class="mb-2">
+                    <label for="title">Password</label>
+                    <input required type="password" name="password" id="password" class="form-control">
+                </div>
+                <button class="btn btn-success">Log In</button>
+            </form>
+        </div>
+    </div>

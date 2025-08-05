@@ -4,9 +4,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <% } %>
-<% if (error_msg && error_msg.length) { %>
+<% if (error_msg && error_msg.length || error && error.length) { %>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <%= error_msg %>
+        <!-- added this 'error' to flash errors originated from passport (/routes/users.ejs) -->
+        <%= error %>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <% } %>

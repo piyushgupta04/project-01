@@ -6,6 +6,11 @@ require('dotenv').config()
 const ejsMate = require('ejs-mate');
 const session = require('express-session')
 const flash = require('connect-flash');
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
+
+// Mongoose user models
+const User = require('./models/users.js')
 
 // enviroment variables!
 const DB_URL = process.env.DB_URL;
@@ -26,15 +31,25 @@ const session_config = {
 app.use(session(session_config))
 app.use(flash())
 
+// passport implementation,
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
 app.use((req, res, next) =>{
   res.locals.success_msg = req.flash('success_msg')
   res.locals.error_msg = req.flash('error_msg')
+  res.locals.error = req.flash('error')
+  res.locals.current_user = req.user
   next()
 })
 
 // * capturing routes-
 const listings = require('./routes/listings.js')
 const reviews = require('./routes/reviews.js')
+const users = require('./routes/users.js')
 
 // * Mongoose Models for DB
 const Listing = require('./models/listing')
@@ -70,9 +85,10 @@ main().then((r)=>{
 async function main() {
   await mongoose.connect(DB_URL + DB_NAME);
 }
-
+// for routes
 app.use('/listings', listings )
 app.use('/listings/:id/reviews', reviews )
+app.use('/', users )
 
 app.listen(PORT, ()=>{
     console.log("Server is up");
@@ -105,11 +121,23 @@ app.get('/', (req, res) =>{
     res.redirect('/listings')
 })
 
+//demo route
+app.get('/demouser', async (req, res)=>{
+  let fakeUser = new User ({
+    email: 'piyush@gmail.com',
+    username: 'piyush17',
+  })
+
+  const registeredUser = await User.register(fakeUser, "17//piyush")
+  res.send(registeredUser)
+
+})
+
 // NEED TO CREATE A LOGGER
 
 // Default error handler
 app.use((err, req, res, next) => {
-  let { statusCode=500, message="Something went wrong!"} = err;
+  let { statusCode=400, message="Something went wrong!"} = err;
   console.log(statusCode, message)
   res.status(statusCode).render('error.ejs', { err });
 });

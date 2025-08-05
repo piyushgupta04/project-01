@@ -1,0 +1,26 @@
+<%- layout('layouts/default.ejs') %>
+    <div class="row">
+        <div class="col col-lg-6">
+            <h1>Welcome!</h1>
+            <h4>Sign up today to list your property on Roamify!</h4>
+            <form method="post" novalidate class="needs-validation" action="/signup">
+                <div class="mb-2">
+                    <label for="title">Username</label>
+                    <input required type="text" name="username" id="username" class="form-control">
+                    <div class="invalid-feedback">Username is Required!</div>
+                    <div class="valid-feedback">Looks Great!</div>
+                </div>
+                <div class="mb-2">
+                    <label for="title">Email</label>
+                    <input required type="text" name="email" id="email" class="form-control">
+                    <div class="invalid-feedback">Email is Required!</div>
+                </div>
+                <div class="mb-2">
+                    <label for="title">Password</label>
+                    <input required type="password" name="password" id="password" class="form-control">
+                    <div class="invalid-feedback">Password is Required!</div>
+                </div>
+                <button class="btn btn-success">Sign Up</button>
+            </form>
+        </div>
+    </div>
