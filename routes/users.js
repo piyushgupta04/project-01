@@ -8,7 +8,7 @@ const User = require('../models/users.js')
 const wrapAsync = require('../utils/wrapAsync.js')
 
 // * isAuthenticated fn()
-const isAuthenticated = require('../isAuthenticated.js')
+const {saveRedirect_URL} = require('../isAuthenticated.js')
 
 // * custom class for error handling
 const ExpressError = require('../utils/ExpressError.js');
@@ -22,9 +22,13 @@ router.get('/signup', (req, res)=>{
 
 router.post('/signup', wrapAsync(async (req, res)=>{
     try{
+        // naya user ko deconstruct kar rahe ha,
         const { username, email, password } = req.body
+        // yaha se ek naya user bana rahe ha 
         const newUser = new User({email, username})
+        // yaha pe User.register function use kar rahe ha jo basically hamare new user ko uska password ke sath database me save kar dega!
         const regUser = await User.register(newUser, password)
+        // ye ha login function, ye leti ha user object ko or usko login karwa deti ha
         req.login(regUser, (err)=>{
             if(err){
                 return next(err)
@@ -43,10 +47,11 @@ router.get('/login', (req, res)=>{
     res.render('users/login.ejs')
 })
 
-router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), async (req, res) => {
+router.post('/login', saveRedirect_URL, passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), async (req, res) => {
     req.flash('success_msg', 'Welcome back to Roamify!');
     console.log("I'm loggged in FR")
-    res.redirect('/listings');
+    let newRedirect_URL = res.locals.redirect_URL || '/listings'
+    res.redirect(newRedirect_URL);
 });
 
 router.get('/logout', (req, res, next)=>{
