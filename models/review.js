@@ -1,4 +1,4 @@
-const { string, number } = require('joi');
+const { string, number, ref } = require('joi');
 const mongoose = require('mongoose');
 const { type } = require('../schema');
 const Schema = mongoose.Schema;
@@ -13,6 +13,11 @@ let reviewSchema = Schema({
     createdAt: {
         type: Date,
         default: Date.now()
+    },
+    // * added author field which stores an objectID of the user who created this comment!
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 })
 

@@ -3,7 +3,6 @@ const express = require('express')
 // ! mergeParams se ID access kar sakte ho req.params se!
 const router = express.Router({mergeParams: true});
 
-
 // Mongoose Model
 const Review = require('../models/review.js')
 const Listing = require('../models/listing.js')
@@ -19,13 +18,15 @@ router.post('/', validateReview, wrapAsync( async (req, res)=>{
   let {id} = req.params
   let get_listing = await Listing.findById(req.params.id)
   let new_review = new Review(req.body.review)
+  
+  // * added current user's ID in the review's author field!
+  new_review.author = req.user._id;
   await new_review.save()
   get_listing.reviews.push(new_review);
   await get_listing.save()
   req.flash('success_msg', 'Review added successfully!')
   res.redirect(`/listings/${id}`)
 }))
-
 
 // ! delete review
 router.delete('/:reviewID', wrapAsync ( async (req, res)=>{

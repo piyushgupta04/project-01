@@ -4,7 +4,6 @@
                     <h3 class="mb-3"><b><%= detail.title %></b><br></h3>
                     <img src="<%= detail.image %>" class="card-img-top show-img" alt="...">
                     <div class="card-body">
-                        <!-- added p tag to show the owner of the listing in the show page -->
                         <p class="card-text">
                             <p class="card-text ownerText">Owned by <b><i><%= detail.owner.username %></i></b></p>
                             <%= detail.desc %><br>
@@ -13,8 +12,7 @@
                             <%= detail.country %><br>
                         </p>
                     </div>
-                    <!-- for security, users who owns the listing has the right to delete and update that listing! -->
-                    <% if (current_user._id.equals(detail.owner._id)) { %>
+                    <% if (current_user && current_user._id.equals(detail.owner._id)) { %>
                         <div class="controls mt-4">
                             <a href="/listings/<%= detail._id %>/edit" class="btn btn-info">Edit</a>
                             <form method="post" action="/listings/<%= detail._id %>?_method=DELETE">
@@ -24,23 +22,27 @@
                     <% } %>
                 </div>
             </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col col-sm-12 col-md-10 col-lg-7 cpl-xl-6 mx-auto">
-                        <h4>Add a review! </h4>
-                        <form method="post" action="/listings/<%= detail._id %>/reviews?_method=POST" novalidate class="needs-validation">
-                            <label for="rating" class="form-label">Slide the slider to rate!</label>
-                            <input type="range" min="1" max="5" class="form-range" name="review[rating]" id="rating"><br>
-                            <label for="comment" class="form-label">Write a comment about this place</label>
-                            <textarea required name="review[comment]" class="form-control" rows="6" id="comment"></textarea>
-                            <div class="invalid-feedback">Please write something ...</div>
-                            <button class="btn btn-outline-dark mt-3">Done</button>
-                        </form>
+
+            <!-- ! added a condition which checks the status of current_user, if current user exists they can see this form and hence can create review, if not the can't write a review! -->
+            <% if (current_user) { %>
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-sm-12 col-md-10 col-lg-7 cpl-xl-6 mx-auto">
+                            <h4>Add a review! </h4>
+                            <form method="post" action="/listings/<%= detail._id %>/reviews?_method=POST" novalidate class="needs-validation">
+                                <label for="rating" class="form-label">Slide the slider to rate!</label>
+                                <input type="range" min="1" max="5" class="form-range" name="review[rating]" id="rating"><br>
+                                <label for="comment" class="form-label">Write a comment about this place</label>
+                                <textarea required name="review[comment]" class="form-control" rows="6" id="comment"></textarea>
+                                <div class="invalid-feedback">Please write something ...</div>
+                                <button class="btn btn-outline-dark mt-3">Done</button>
+                            </form>
+                        </div>
                     </div>
+                    <hr>
                 </div>
-                <hr>
-            </div>
-            <div class="container">
+                <% } %>
+                <div class="container">
                 <div class="row">
                     <div class="col col-sm-12 col-md-10 col-lg-7 cpl-xl-6 mx-auto">
                         <h4>Reviews-</h4>
