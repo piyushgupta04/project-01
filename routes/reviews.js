@@ -11,18 +11,7 @@ const Listing = require('../models/listing.js')
 // * Wrapper function for .catch() 
 const wrapAsync = require('../utils/wrapAsync.js')
 
-// * Joi's Validation schema
-const {joi_reviewSchema} = require('../schema.js')
-
-// * Joi's validation function
-const validateReview = (req, res, next) => {
-  let {error} = joi_reviewSchema.validate(req.body)
-  if(error){
-    const msg = error.details.map(el => el.message).join(',');
-    throw new ExpressError(400, msg)
-  }
-  next()
-}
+const { validateReview } = require('../middlewares.js')
 
 // ! new review
 router.post('/', validateReview, wrapAsync( async (req, res)=>{

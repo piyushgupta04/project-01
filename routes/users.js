@@ -8,7 +8,7 @@ const User = require('../models/users.js')
 const wrapAsync = require('../utils/wrapAsync.js')
 
 // * isAuthenticated fn()
-const {saveRedirect_URL} = require('../isAuthenticated.js')
+const {saveRedirect_URL} = require('../middlewares.js')
 
 // * custom class for error handling
 const ExpressError = require('../utils/ExpressError.js');

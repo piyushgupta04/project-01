@@ -18,6 +18,9 @@ async function main() {
 async function loadData(){
     console.log("Trying to flush existing data from the Database ...")
     await listing.deleteMany({})
+    // this line adds 'owner' in listing's object.
+    // map function returns a value so we reassign the returned value in the same variable!
+    initData.data = initData.data.map((obj)=>({...obj, owner: '689566a2d54d13bea0ab16b3'}))
     await listing.insertMany(initData.data)
 }
 

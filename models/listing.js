@@ -31,7 +31,12 @@ const listingSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Review'
         }
-    ]
+    ],
+    // Added owner field to implement Authorization!
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 })
 
 listingSchema.post('findOneAndDelete', async (data)=>{
